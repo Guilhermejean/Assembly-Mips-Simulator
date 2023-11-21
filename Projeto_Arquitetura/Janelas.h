@@ -172,11 +172,7 @@ void abrirArquivo(FILE *arquivo, char *nomeArquivo)
 {
 
     int ch;
-    int i = 0;
-    char instrucao[10];
-    char registrador[10];
-    int valor;
-    int matriz[10];
+
   
     int yMax, xMax;
     getmaxyx(stdscr, yMax, xMax);
@@ -199,22 +195,23 @@ void abrirArquivo(FILE *arquivo, char *nomeArquivo)
 
     rewind(arquivo);
 
+char linha[256];
+    char *instrucao;
+    char *registrador;
+    int valor;
 
-
-
-
-    // while para pegar cada linha do código
- while (fscanf(arquivo, "%s %s %d", instrucao, registrador, &valor) != EOF) {
-   
-    if (strcmp(instrucao, "li") == 0) {
-        matriz[i] = valor;
-        wprintw(win3, "%i",valor);
-        wgetch(win3);
-        werase(win3);
-        wrefresh(win3);
-        i++;
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        instrucao = strtok(linha, " ");
+        if (strcmp(instrucao, "li") == 0) {
+            registrador = strtok(NULL, ",");
+            valor = atoi(strtok(NULL, "\n"));
+            wprintw(win3,"Registrador: %s, Valor: %d\n", registrador, valor);
+        }
     }
-}
+
+ 
+
+
 
     wgetch(win3); // Aguarda a entrada do usuário
     fclose(arquivo);
