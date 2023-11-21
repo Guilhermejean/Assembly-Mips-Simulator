@@ -185,7 +185,7 @@ void abrirArquivo(FILE *arquivo, char *nomeArquivo)
     WINDOW *win3 = newwin((yMax / 1.2) + 8, (xMax / 1.2) + 28, 0, 0);
     arquivo = fopen(nomeArquivo, "r");
 
-    char linha[256]; // linha do arquivo
+    char linha[256]; // char que cada linha pode usar
     int linha_num = 0;
 
     while ((ch = fgetc(arquivo)) != EOF)
@@ -198,7 +198,7 @@ void abrirArquivo(FILE *arquivo, char *nomeArquivo)
     wrefresh(win3);
 
     rewind(arquivo);
-  //while para pegarcada linha do código
+  //while para pegar cada linha do código
     while (fgets(linha, 256, arquivo))
     {
         linha_num++;
@@ -206,10 +206,10 @@ void abrirArquivo(FILE *arquivo, char *nomeArquivo)
 
         while (pt != NULL)
         {
-            if (strcmp("add", pt) == 0)
+            if (strcmp("li", pt) == 0)
             {
 
-                wprintw(win3, " %s\n", pt);
+               
                 break;
             }
             pt = strtok(NULL, " ,.-");
