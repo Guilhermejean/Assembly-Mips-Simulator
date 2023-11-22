@@ -173,7 +173,6 @@ void abrirArquivo(FILE *arquivo, char *nomeArquivo)
 
     int ch;
 
-  
     int yMax, xMax;
     getmaxyx(stdscr, yMax, xMax);
     initscr(); // Inicia o modo curses
@@ -181,8 +180,6 @@ void abrirArquivo(FILE *arquivo, char *nomeArquivo)
     noecho(); // Desliga o eco de entrada
     WINDOW *win3 = newwin((yMax / 1.2) + 8, (xMax / 1.2) + 28, 0, 0);
     arquivo = fopen(nomeArquivo, "r");
-
-    
 
     while ((ch = fgetc(arquivo)) != EOF)
     {
@@ -195,23 +192,534 @@ void abrirArquivo(FILE *arquivo, char *nomeArquivo)
 
     rewind(arquivo);
 
-char linha[256];
+    char linha[256];
     char *instrucao;
-    char *registrador;
-    int valor;
+    char registrador[32][4];
+    int valor[32];
+    int i = 0;
 
-    while (fgets(linha, sizeof(linha), arquivo)) {
+    while (fgets(linha, sizeof(linha), arquivo))
+    {
         instrucao = strtok(linha, " ");
-        if (strcmp(instrucao, "li") == 0) {
-            registrador = strtok(NULL, ",");
-            valor = atoi(strtok(NULL, "\n"));
-            wprintw(win3,"Registrador: %s, Valor: %d\n", registrador, valor);
+        if (strcmp(instrucao, "li") == 0)
+        {
+            strcpy(registrador[i], strtok(NULL, ","));
+            valor[i] = atoi(strtok(NULL, "\n"));
+            i++;
+        }
+
+        if (strcmp(instrucao, "add") == 0)
+        {
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
+
+            registradorDestino = strtok(NULL, " ,");
+
+            i++;
+            strcpy(registrador[i], registradorDestino);
+
+            registradorOrigem1 = strtok(NULL, " ,");
+
+            registradorOrigem2 = strtok(NULL, " \n");
+
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
+
+            for (int k = 0; k < i + 1; k++)
+            {
+                if (strcmp(registrador[k], registradorDestino) == 0)
+                {
+                    indice_destino = k;
+                }
+                else if (strcmp(registrador[k], registradorOrigem1) == 0)
+                {
+                    indice_origem1 = k;
+                }
+                else if (strcmp(registrador[k], registradorOrigem2) == 0)
+                {
+                    indice_origem2 = k;
+                }
+            }
+
+            if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
+            {
+
+                wprintw(win3, "Realizando a adição...\n");
+                valor[indice_destino] = valor[indice_origem1] + valor[indice_origem2];
+                wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                wprintw(win3, "Adição realizada.\n");
+                wrefresh(win3); // Atualiza a janela após a operação de adição*/
+            }
+        }
+        if (strcmp(instrucao, "sub") == 0)
+        {
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
+
+            registradorDestino = strtok(NULL, " ,");
+
+            i++;
+            strcpy(registrador[i], registradorDestino);
+
+            registradorOrigem1 = strtok(NULL, " ,");
+
+            registradorOrigem2 = strtok(NULL, " \n");
+
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
+
+            for (int k = 0; k < i + 1; k++)
+            {
+                if (strcmp(registrador[k], registradorDestino) == 0)
+                {
+                    indice_destino = k;
+                }
+                else if (strcmp(registrador[k], registradorOrigem1) == 0)
+                {
+                    indice_origem1 = k;
+                }
+                else if (strcmp(registrador[k], registradorOrigem2) == 0)
+                {
+                    indice_origem2 = k;
+                }
+            }
+
+            if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
+            {
+
+                wprintw(win3, "Realizando a subtração...\n");
+                valor[indice_destino] = valor[indice_origem1] - valor[indice_origem2];
+                wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                wprintw(win3, "Subtração realizada.\n");
+                wrefresh(win3); // Atualiza a janela após a operação de adição*/
+            }
+        }
+
+        if (strcmp(instrucao, "addi") == 0)
+        {
+            char *registradorDestino;
+            char *registradorOrigem;
+            int valorImediato;
+
+            registradorDestino = strtok(NULL, " ,");
+            i++;
+            strcpy(registrador[i], registradorDestino);
+            registradorOrigem = strtok(NULL, " ,");
+            valorImediato = atoi(strtok(NULL, " \n"));
+
+            int indice_destino = -1;
+            int indice_origem = -1;
+
+            for (int k = 0; k < i + 1; k++)
+            {
+                if (strcmp(registrador[k], registradorDestino) == 0)
+                {
+                    indice_destino = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem) == 0)
+                {
+                    indice_origem = k;
+                }
+            }
+
+            if (indice_destino != -1 && indice_origem != -1)
+            {
+                valor[indice_destino] = valor[indice_origem] + valorImediato;
+                wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                wrefresh(win3);
+            }
+        }
+        if (strcmp(instrucao, "subi") == 0)
+        {
+            char *registradorDestino;
+            char *registradorOrigem;
+            int valorImediato;
+
+            registradorDestino = strtok(NULL, " ,");
+            i++;
+            strcpy(registrador[i], registradorDestino);
+            registradorOrigem = strtok(NULL, " ,");
+            valorImediato = atoi(strtok(NULL, " \n"));
+
+            int indice_destino = -1;
+            int indice_origem = -1;
+
+            for (int k = 0; k < i + 1; k++)
+            {
+                if (strcmp(registrador[k], registradorDestino) == 0)
+                {
+                    indice_destino = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem) == 0)
+                {
+                    indice_origem = k;
+                }
+            }
+
+            if (indice_destino != -1 && indice_origem != -1)
+            {
+                valor[indice_destino] = valor[indice_origem] - valorImediato;
+                wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                wrefresh(win3);
+            }
+        }
+        if (strcmp(instrucao, "mult") == 0)
+        {
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
+
+            registradorDestino = strtok(NULL, " ,");
+            i++;
+            strcpy(registrador[i], registradorDestino);
+            registradorOrigem1 = strtok(NULL, " ,");
+            registradorOrigem2 = strtok(NULL, " \n");
+
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
+
+            for (int k = 0; k < i + 1; k++)
+            {
+                if (strcmp(registrador[k], registradorDestino) == 0)
+                {
+                    indice_destino = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem1) == 0)
+                {
+                    indice_origem1 = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem2) == 0)
+                {
+                    indice_origem2 = k;
+                }
+            }
+
+            if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
+            {
+                valor[indice_destino] = valor[indice_origem1] * valor[indice_origem2];
+                wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                wrefresh(win3);
+            }
+        }
+        if (strcmp(instrucao, "div") == 0)
+        {
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
+
+            registradorDestino = strtok(NULL, " ,");
+            i++;
+            strcpy(registrador[i], registradorDestino);
+            registradorOrigem1 = strtok(NULL, " ,");
+            registradorOrigem2 = strtok(NULL, " \n");
+
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
+
+            for (int k = 0; k < i + 1; k++)
+            {
+                if (strcmp(registrador[k], registradorDestino) == 0)
+                {
+                    indice_destino = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem1) == 0)
+                {
+                    indice_origem1 = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem2) == 0)
+                {
+                    indice_origem2 = k;
+                }
+            }
+
+            if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
+            {
+                if (valor[indice_origem2] != 0)
+                {
+                    valor[indice_destino] = valor[indice_origem1] / valor[indice_origem2];
+                    wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                    wrefresh(win3);
+                }
+                else
+                {
+                    wprintw(win3, "Erro: Divisão por zero não é permitida.\n");
+                    wrefresh(win3);
+                }
+            }
+        }
+        if (strcmp(instrucao, "and") == 0)
+        {
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
+
+            registradorDestino = strtok(NULL, " ,");
+            i++;
+            strcpy(registrador[i], registradorDestino);
+            registradorOrigem1 = strtok(NULL, " ,");
+            registradorOrigem2 = strtok(NULL, " \n");
+
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
+
+            for (int k = 0; k < i + 1; k++)
+            {
+                if (strcmp(registrador[k], registradorDestino) == 0)
+                {
+                    indice_destino = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem1) == 0)
+                {
+                    indice_origem1 = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem2) == 0)
+                {
+                    indice_origem2 = k;
+                }
+            }
+
+            if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
+            {
+                valor[indice_destino] = valor[indice_origem1] & valor[indice_origem2];
+                wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                wrefresh(win3);
+            }
+        }
+        if (strcmp(instrucao, "or") == 0)
+        {
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
+
+            registradorDestino = strtok(NULL, " ,");
+            i++;
+            strcpy(registrador[i], registradorDestino);
+            registradorOrigem1 = strtok(NULL, " ,");
+            registradorOrigem2 = strtok(NULL, " \n");
+
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
+
+            for (int k = 0; k < i + 1; k++)
+            {
+                if (strcmp(registrador[k], registradorDestino) == 0)
+                {
+                    indice_destino = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem1) == 0)
+                {
+                    indice_origem1 = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem2) == 0)
+                {
+                    indice_origem2 = k;
+                }
+            }
+
+            if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
+            {
+                valor[indice_destino] = valor[indice_origem1] | valor[indice_origem2];
+                wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                wrefresh(win3);
+            }
+        }
+        if (strcmp(instrucao, "xor") == 0)
+        {
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
+
+            registradorDestino = strtok(NULL, " ,");
+            i++;
+            strcpy(registrador[i], registradorDestino);
+            registradorOrigem1 = strtok(NULL, " ,");
+            registradorOrigem2 = strtok(NULL, " \n");
+
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
+
+            for (int k = 0; k < i + 1; k++)
+            {
+                if (strcmp(registrador[k], registradorDestino) == 0)
+                {
+                    indice_destino = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem1) == 0)
+                {
+                    indice_origem1 = k;
+                }
+                if (strcmp(registrador[k], registradorOrigem2) == 0)
+                {
+                    indice_origem2 = k;
+                }
+            }
+
+            if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
+            {
+                valor[indice_destino] = valor[indice_origem1] ^ valor[indice_origem2];
+                wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                wrefresh(win3);
+            }
+        }
+        
+        if (strcmp(instrucao, "nor") == 0)
+{
+    char *registradorDestino;
+    char *registradorOrigem1;
+    char *registradorOrigem2;
+
+    registradorDestino = strtok(NULL, " ,");
+    i++;
+    strcpy(registrador[i], registradorDestino);
+    registradorOrigem1 = strtok(NULL, " ,");
+    registradorOrigem2 = strtok(NULL, " \n");
+
+    int indice_destino = -1;
+    int indice_origem1 = -1;
+    int indice_origem2 = -1;
+
+    for (int k = 0; k < i + 1; k++)
+    {
+        if (strcmp(registrador[k], registradorDestino) == 0)
+        {
+            indice_destino = k;
+        }
+        if (strcmp(registrador[k], registradorOrigem1) == 0)
+        {
+            indice_origem1 = k;
+        }
+        if (strcmp(registrador[k], registradorOrigem2) == 0)
+        {
+            indice_origem2 = k;
         }
     }
 
- 
+    if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
+    {
+        valor[indice_destino] = ~(valor[indice_origem1] | valor[indice_origem2]);  // Operação NOR
+        wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+        wrefresh(win3);
+    }
+}
+if (strcmp(instrucao, "slt") == 0)
+{
+    char *registradorDestino;
+    char *registradorOrigem1;
+    char *registradorOrigem2;
+
+    registradorDestino = strtok(NULL, " ,");
+    i++;
+    strcpy(registrador[i], registradorDestino);
+    registradorOrigem1 = strtok(NULL, " ,");
+    registradorOrigem2 = strtok(NULL, " \n");
+
+    int indice_destino = -1;
+    int indice_origem1 = -1;
+    int indice_origem2 = -1;
+
+    for (int k = 0; k < i + 1; k++)
+    {
+        if (strcmp(registrador[k], registradorDestino) == 0)
+        {
+            indice_destino = k;
+        }
+        if (strcmp(registrador[k], registradorOrigem1) == 0)
+        {
+            indice_origem1 = k;
+        }
+        if (strcmp(registrador[k], registradorOrigem2) == 0)
+        {
+            indice_origem2 = k;
+        }
+    }
+
+    if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
+    {
+        valor[indice_destino] = valor[indice_origem1] < valor[indice_origem2] ? 1 : 0;  // Operação SLT
+        wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+        wrefresh(win3);
+    }
+}
+if (strcmp(instrucao, "sll") == 0)
+{
+    char *registradorDestino;
+    char *registradorOrigem;
+    int n;
+
+    registradorDestino = strtok(NULL, " ,");
+    i++;
+    strcpy(registrador[i], registradorDestino);
+    registradorOrigem = strtok(NULL, " ,");
+    n = atoi(strtok(NULL, " \n"));  // Converte a string para um inteiro
+
+    int indice_destino = -1;
+    int indice_origem = -1;
+
+    for (int k = 0; k < i + 1; k++)
+    {
+        if (strcmp(registrador[k], registradorDestino) == 0)
+        {
+            indice_destino = k;
+        }
+        if (strcmp(registrador[k], registradorOrigem) == 0)
+        {
+            indice_origem = k;
+        }
+    }
+
+    if (indice_destino != -1 && indice_origem != -1)
+    {
+        valor[indice_destino] = valor[indice_origem] << n;  // Operação SLL
+        wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+        wrefresh(win3);
+    }
+}
+if (strcmp(instrucao, "sra") == 0)
+{
+    char *registradorDestino;
+    char *registradorOrigem;
+    int n;
+
+    registradorDestino = strtok(NULL, " ,");
+    i++;
+    strcpy(registrador[i], registradorDestino);
+    registradorOrigem = strtok(NULL, " ,");
+    n = atoi(strtok(NULL, " \n"));  // Converte a string para um inteiro
+
+    int indice_destino = -1;
+    int indice_origem = -1;
+
+    for (int k = 0; k < i + 1; k++)
+    {
+        if (strcmp(registrador[k], registradorDestino) == 0)
+        {
+            indice_destino = k;
+        }
+        if (strcmp(registrador[k], registradorOrigem) == 0)
+        {
+            indice_origem = k;
+        }
+    }
+
+    if (indice_destino != -1 && indice_origem != -1)
+    {
+        valor[indice_destino] = valor[indice_origem] >> n;  // Operação SRA
+        wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+        wrefresh(win3);
+    }
+}
 
 
+    }
 
     wgetch(win3); // Aguarda a entrada do usuário
     fclose(arquivo);
