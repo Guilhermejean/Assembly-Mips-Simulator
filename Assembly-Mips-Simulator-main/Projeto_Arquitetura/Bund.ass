@@ -1,0 +1,15 @@
+.data
+
+
+.text
+
+main:
+
+
+      li $t4, 10
+      li $t1, 30
+
+    div $t0, $t1, $t4
+      
+      li $v0, 10
+      syscall       
