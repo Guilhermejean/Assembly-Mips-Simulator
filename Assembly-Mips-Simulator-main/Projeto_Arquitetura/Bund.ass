@@ -1,15 +1,12 @@
-.data
-
+data
 
 .text
 
 main:
 
+li $t0, 5
+sw $t0, 40($t5)
 
-      li $t4, 10
-      li $t1, 30
-
-    div $t0, $t1, $t4
-      
-      li $v0, 10
-      syscall       
+lw $t1,40($t5)
+li $v0,10
+syscall
