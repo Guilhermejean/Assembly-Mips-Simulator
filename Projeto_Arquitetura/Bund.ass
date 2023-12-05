@@ -1,0 +1,18 @@
+data
+
+.text
+
+main:
+
+li $t0, 5
+li $t1, 10
+
+sub $t5, $t0, $t1
+
+sw $t2, 20($t3)
+li $v0, 1
+syscall
+
+
+li $v0, 10
+syscall
