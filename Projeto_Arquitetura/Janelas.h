@@ -204,36 +204,18 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
 
     char linha[256];
     char *instrucao;
-     char *registradorDestino;
-            char *registradorOrigem1;
-            char *registradorOrigem2;
-             char *registradorOrigem;
-            char *registradorBase;
-   int indice_base = -1;
- int indice_destino = -1;
- int pc;
-            int indice_origem1 = -1;
-            int indice_origem2 = -1;
-             int indice_origem = -1;
+
     int i = 0;
- int deslocamento;
-            int memoria[100];
+
     while (fgets(linha, sizeof(linha), arquivo))
     {
         instrucao = strtok(linha, " ");
 
         if (strcmp(instrucao, "li") == 0)
         {
-            strcpy(registrador[i], strtok(NULL, " ,"));
-            valor[i] = atoi(strtok(NULL, " \n"));
+            strcpy(registrador[i], strtok(NULL, ","));
+            valor[i] = atoi(strtok(NULL, "\n"));
             i++;
-        }           if (strcmp(registrador[i], "$v0") == 0 && valor[i ] == 1)
-        {
-                  wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
-                  wgetch(win3);
-                wrefresh(win3);
-                // Atualiza a janela após a operação de adição*/
-        
         }
         if (strcmp(registrador[i - 1], "$v0") == 0 && valor[i - 1] == 10)
         {
@@ -242,9 +224,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução add
         if (strcmp(instrucao, "add") == 0)
         {
-            *registradorDestino;
-            *registradorOrigem1;
-            *registradorOrigem2;
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
 
             registradorDestino = strtok(NULL, " ,");
 
@@ -253,9 +235,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem1 = strtok(NULL, " ,");
             registradorOrigem2 = strtok(NULL, " \n");
 
-            indice_destino = -1;
-            indice_origem1 = -1;
-             indice_origem2 = -1;
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
 
             for (int k = 0; k < i + 1; k++)
             {
@@ -276,18 +258,20 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
 
             if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
             {
+                wprintw(win3, "Realizando a adição...\n");
                 valor[indice_destino] = valor[indice_origem1] + valor[indice_origem2];
-        
+                wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
+                wprintw(win3, "Adição realizada.\n");
+                wrefresh(win3); // Atualiza a janela após a operação de adição*/
             }
-     
         }
 
         // Instrução sub
         if (strcmp(instrucao, "sub") == 0)
         {
-            *registradorDestino;
-            *registradorOrigem1;
-            *registradorOrigem2;
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
 
             registradorDestino = strtok(NULL, " ,");
 
@@ -296,9 +280,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem1 = strtok(NULL, " ,");
             registradorOrigem2 = strtok(NULL, " \n");
 
-         indice_destino = -1;
-         indice_origem1 = -1;
-        indice_origem2 = -1;
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
 
             for (int k = 0; k <= i ; k++)
             {
@@ -319,7 +303,7 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             if (indice_destino != -1 && indice_origem1 != -1 && indice_origem2 != -1)
             {
 
-             
+                wprintw(win3, "Realizando a subtração...\n");
                 valor[indice_destino] = valor[indice_origem1] - valor[indice_origem2];
                 wprintw(win3, "Registrador: %s, Valor: %d\n", registrador[indice_destino], valor[indice_destino]);
                 wprintw(win3, "Subtração realizada.\n");
@@ -330,8 +314,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução addi
         if (strcmp(instrucao, "addi") == 0)
         {
-         *registradorDestino;
-         *registradorOrigem;
+            char *registradorDestino;
+            char *registradorOrigem;
             int valorImediato;
 
             registradorDestino = strtok(NULL, " ,");
@@ -340,8 +324,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem = strtok(NULL, " ,");
             valorImediato = atoi(strtok(NULL, " \n"));
 
-           indice_destino = -1;
-           indice_origem = -1;
+            int indice_destino = -1;
+            int indice_origem = -1;
 
             for (int k = 0; k <= i; k++)
             {
@@ -366,8 +350,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução subi
         if (strcmp(instrucao, "subi") == 0)
         {
-           *registradorDestino;
-           *registradorOrigem;
+            char *registradorDestino;
+            char *registradorOrigem;
             int valorImediato;
 
             registradorDestino = strtok(NULL, " ,");
@@ -376,8 +360,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem = strtok(NULL, " ,");
             valorImediato = atoi(strtok(NULL, " \n"));
 
-            
-           
+            int indice_destino = -1;
+            int indice_origem = -1;
 
             for (int k = 0; k <= i; k++)
             {
@@ -402,9 +386,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução mult
         if (strcmp(instrucao, "mult") == 0)
         {
-           *registradorDestino;
-           *registradorOrigem1;
-          *registradorOrigem2;
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
 
             registradorDestino = strtok(NULL, " ,");
             strcpy(registrador[i], registradorDestino);
@@ -412,9 +396,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem1 = strtok(NULL, " ,");
             registradorOrigem2 = strtok(NULL, " \n");
 
-           indice_destino = -1;
-           indice_origem1 = -1;
-           indice_origem2 = -1;
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
 
             for (int k = 0; k <= i; k++)
             {
@@ -443,9 +427,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução div
         if (strcmp(instrucao, "div") == 0)
         {
-          *registradorDestino;
-          *registradorOrigem1;
-          *registradorOrigem2;
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
 
             registradorDestino = strtok(NULL, " ,");
             strcpy(registrador[i], registradorDestino);
@@ -453,9 +437,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem1 = strtok(NULL, " ,");
             registradorOrigem2 = strtok(NULL, " \n");
 
-          indice_destino = -1;
-          indice_origem1 = -1;
-          indice_origem2 = -1;
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
 
             for (int k = 0; k <= i; k++)
             {
@@ -492,9 +476,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução and
         if (strcmp(instrucao, "and") == 0)
         {
-             *registradorDestino;
-             *registradorOrigem1;
-             *registradorOrigem2;
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
 
             registradorDestino = strtok(NULL, " ,");
             strcpy(registrador[i], registradorDestino);
@@ -502,9 +486,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem1 = strtok(NULL, " ,");
             registradorOrigem2 = strtok(NULL, " \n");
 
-             indice_destino = -1;
-             indice_origem1 = -1;
-             indice_origem2 = -1;
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
 
             for (int k = 0; k <= i; k++)
             {
@@ -533,9 +517,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução or
         if (strcmp(instrucao, "or") == 0)
         {
-           *registradorDestino;
-          *registradorOrigem1;
-           *registradorOrigem2;
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
 
             registradorDestino = strtok(NULL, " ,");
             strcpy(registrador[i], registradorDestino);
@@ -543,9 +527,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem1 = strtok(NULL, " ,");
             registradorOrigem2 = strtok(NULL, " \n");
 
-           indice_destino = -1;
-           indice_origem1 = -1;
-           indice_origem2 = -1;
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
 
             for (int k = 0; k <=i; k++)
             {
@@ -574,9 +558,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução xor
         if (strcmp(instrucao, "xor") == 0)
         {
-            *registradorDestino;
-            *registradorOrigem1;
-            *registradorOrigem2;
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
 
             registradorDestino = strtok(NULL, " ,");
             strcpy(registrador[i], registradorDestino);
@@ -584,9 +568,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem1 = strtok(NULL, " ,");
             registradorOrigem2 = strtok(NULL, " \n");
 
-           indice_destino = -1;
-           indice_origem1 = -1;
-           indice_origem2 = -1;
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
 
             for (int k = 0; k <=i ; k++)
             {
@@ -615,9 +599,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução nor
         if (strcmp(instrucao, "nor") == 0)
         {
-           *registradorDestino;
-          *registradorOrigem1;
-           *registradorOrigem2;
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
 
             registradorDestino = strtok(NULL, " ,");
             strcpy(registrador[i], registradorDestino);
@@ -625,9 +609,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem1 = strtok(NULL, " ,");
             registradorOrigem2 = strtok(NULL, " \n");
 
-            indice_destino = -1;
-            indice_origem1 = -1;
-           indice_origem2 = -1;
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
 
             for (int k = 0; k <= i; k++)
             {
@@ -656,9 +640,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução slt
         if (strcmp(instrucao, "slt") == 0)
         {
-            *registradorDestino;
-             *registradorOrigem1;
-             *registradorOrigem2;
+            char *registradorDestino;
+            char *registradorOrigem1;
+            char *registradorOrigem2;
 
             registradorDestino = strtok(NULL, " ,");
             strcpy(registrador[i], registradorDestino);
@@ -666,9 +650,9 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem1 = strtok(NULL, " ,");
             registradorOrigem2 = strtok(NULL, " \n");
 
- indice_destino = -1;
- indice_origem1 = -1;
- indice_origem2 = -1;
+            int indice_destino = -1;
+            int indice_origem1 = -1;
+            int indice_origem2 = -1;
 
             for (int k = 0; k <= i; k++)
             {
@@ -697,8 +681,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução sll
         if (strcmp(instrucao, "sll") == 0)
         {
-            *registradorDestino;
-                   *registradorOrigem;
+            char *registradorDestino;
+            char *registradorOrigem;
             int n;
 
             registradorDestino = strtok(NULL, " ,");
@@ -707,8 +691,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem = strtok(NULL, " ,");
             n = atoi(strtok(NULL, " \n")); // Converte a string para um inteiro
 
-             indice_destino = -1;
-             indice_origem = -1;
+            int indice_destino = -1;
+            int indice_origem = -1;
 
             for (int k = 0; k <= i ; k++)
             {
@@ -733,8 +717,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         // Instrução sra
         if (strcmp(instrucao, "sra") == 0)
         {
-             *registradorDestino;
-             *registradorOrigem;
+            char *registradorDestino;
+            char *registradorOrigem;
             int n;
 
             registradorDestino = strtok(NULL, " ,");
@@ -743,8 +727,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorOrigem = strtok(NULL, " ,");
             n = atoi(strtok(NULL, " \n")); // Converte a string para um inteiro
 
-             indice_destino = -1;
-     indice_origem = -1;
+            int indice_destino = -1;
+            int indice_origem = -1;
 
             for (int k = 0; k <=i; k++)
             {
@@ -767,9 +751,10 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         }
         if (strcmp(instrucao, "sw") == 0)
         {
-          *registradorOrigem;
-            *registradorBase;
-          
+            char *registradorOrigem;
+            char *registradorBase;
+            int deslocamento;
+            int memoria[100];
             registradorOrigem = strtok(NULL, " ,");
             strcpy(registrador[i], registradorOrigem);
             i++;
@@ -777,8 +762,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorBase = strtok(NULL, " )");
             strcpy(registrador[i], registradorBase);
 
-             indice_origem = -1;
-             indice_base = -1;
+            int indice_origem = -1;
+            int indice_base = -1;
 
             for (int k = 0; k <= i; k++)
             {
@@ -803,10 +788,10 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
 
         if (strcmp(instrucao, "lw") == 0)
         {
-            *registradorDestino;
-            *registradorBase;
-           
-            
+            char *registradorDestino;
+            char *registradorBase;
+            int deslocamento;
+            int memoria[1000];
             registradorDestino = strtok(NULL, " ,");
             strcpy(registrador[i], registradorDestino);
             i++;
@@ -814,8 +799,8 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
             registradorBase = strtok(NULL, " )");
             strcpy(registrador[i], registradorBase);
 
-            indice_destino = -1;
-            indice_base = -1;
+            int indice_destino = -1;
+            int indice_base = -1;
 
             for (int k = 0; k <= i; k++)
             {
@@ -838,9 +823,10 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
         }
         if (strcmp(instrucao, "lb") == 0)
 {
-     *registradorDestino;
-     *registradorBase;
-    
+    char *registradorDestino;
+    char *registradorBase;
+    int deslocamento;
+    int memoria[1000];
 
     registradorDestino = strtok(NULL, " ,");
     strcpy(registrador[i], registradorDestino);
@@ -848,7 +834,7 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
     deslocamento = atoi(strtok(NULL, " ("));  // Converte a string para um inteiro
     registradorBase = strtok(NULL, " )");
      strcpy(registrador[i], registradorBase);
-     indice_destino = -1;
+    int indice_destino = -1;
     int indice_base = -1;
 
     for (int k = 0; k <= i ; k++)
@@ -872,9 +858,10 @@ int abrirArquivo(FILE *arquivo, char *nomeArquivo, char registrador[32][4], int 
 }
 if (strcmp(instrucao, "sb") == 0)
 {
-  *registradorOrigem;
-  *registradorBase;
- 
+    char *registradorOrigem;
+    char *registradorBase;
+    int deslocamento;
+    int memoria[1000];
 
     registradorOrigem = strtok(NULL, " ,");
      strcpy(registrador[i], registradorOrigem);
@@ -883,8 +870,8 @@ if (strcmp(instrucao, "sb") == 0)
     registradorBase = strtok(NULL, " )");
  strcpy(registrador[i], registradorBase);
     
-   indice_origem = -1;
-    indice_base = -1;
+    int indice_origem = -1;
+    int indice_base = -1;
 
     for (int k = 0; k < i + 1; k++)
     {
@@ -907,14 +894,14 @@ if (strcmp(instrucao, "sb") == 0)
 }
 if (strcmp(instrucao, "jump") == 0)
 {
-    *registradorDestino;
+   char *registradorDestino;
    
     
     registradorDestino = strtok(NULL, " ,");
     strcpy(registrador[i], registradorDestino);
     i++;
 
-     indice_destino = -1;
+   int  indice_destino = -1;
 
     for (int k = 0; k < i + 1; k++)
     {
@@ -926,20 +913,20 @@ if (strcmp(instrucao, "jump") == 0)
 
     if (indice_destino != -1)
     {
-        pc = valor[indice_destino];  // Operação Jump
+     int   pc = valor[indice_destino];  // Operação Jump
         wprintw(win3, "PC: %d\n", pc);
         wrefresh(win3);
     }
 }
 if (strcmp(instrucao, "jr") == 0)
 {
-   *registradorDestino;
+   char *registradorDestino;
   
     registradorDestino = strtok(NULL, " ,");
     strcpy(registrador[i], registradorDestino);
     i++;
 
-    indice_destino = -1;
+   int indice_destino = -1;
 
     for (int k = 0; k < i + 1; k++)
     {
@@ -951,15 +938,15 @@ if (strcmp(instrucao, "jr") == 0)
 
     if (indice_destino != -1)
     {
-        pc = valor[indice_destino];  // Operação Jump Register
+       int pc = valor[indice_destino];  // Operação Jump Register
         wprintw(win3, "PC: %d\n", pc);
         wrefresh(win3);
     }
 }
 if (strcmp(instrucao, "jal") == 0)
 {
-    *registradorDestino;
-   
+    char *registradorDestino;
+   int pc;
     registradorDestino = strtok(NULL, " ,");
     strcpy(registrador[i], registradorDestino);
     i++;
@@ -997,7 +984,7 @@ if (strcmp(instrucao, "beq") == 0)
     strcpy(registrador[i], registrador2);
     i++;
 
-    deslocamento = atoi(strtok(NULL, " ,"));  // Converte a string para um inteiro
+   int deslocamento = atoi(strtok(NULL, " ,"));  // Converte a string para um inteiro
 
     int indice_reg1 = -1;
     int indice_reg2 = -1;
@@ -1018,7 +1005,7 @@ if (strcmp(instrucao, "beq") == 0)
     {
         if (valor[indice_reg1] == valor[indice_reg2])  // Operação Branch if Equal
         {
-            pc = pc + deslocamento;
+          int  pc = pc + deslocamento;
             wprintw(win3, "PC: %d\n", pc);
             wrefresh(win3);
         }
@@ -1038,7 +1025,7 @@ if (strcmp(instrucao, "bne") == 0)
     strcpy(registrador[i], registrador2);
     i++;
 
-    deslocamento = atoi(strtok(NULL, " ,"));  // Converte a string para um inteiro
+   int deslocamento = atoi(strtok(NULL, " ,"));  // Converte a string para um inteiro
 
     int indice_reg1 = -1;
     int indice_reg2 = -1;
@@ -1059,7 +1046,7 @@ if (strcmp(instrucao, "bne") == 0)
     {
         if (valor[indice_reg1] != valor[indice_reg2])  // Operação Branch if Not Equal
         {
-            pc = pc + deslocamento;
+          int  pc = pc + deslocamento;
             wprintw(win3, "PC: %d\n", pc);
             wrefresh(win3);
         }
@@ -1079,7 +1066,7 @@ if (strcmp(instrucao, "bgt") == 0)
     strcpy(registrador[i], registrador2);
     i++;
 
-    deslocamento = atoi(strtok(NULL, " ,"));  // Converte a string para um inteiro
+    int deslocamento = atoi(strtok(NULL, " ,"));  // Converte a string para um inteiro
 
     int indice_reg1 = -1;
     int indice_reg2 = -1;
@@ -1100,7 +1087,7 @@ if (strcmp(instrucao, "bgt") == 0)
     {
         if (valor[indice_reg1] > valor[indice_reg2])  // Operação Branch if Greater Than
         {
-            pc = pc + deslocamento;
+          int  pc = pc + deslocamento;
             wprintw(win3, "PC: %d\n", pc);
             wrefresh(win3);
         }
@@ -1114,7 +1101,7 @@ if (strcmp(instrucao, "bgt") == 0)
     strcpy(registrador[i], registrador1);
     i++;
 
-    deslocamento = atoi(strtok(NULL, " ,"));  // Converte a string para um inteiro
+    int deslocamento = atoi(strtok(NULL, " ,"));  // Converte a string para um inteiro
 
     int indice_reg1 = -1;
 
@@ -1130,13 +1117,12 @@ if (strcmp(instrucao, "bgt") == 0)
     {
         if (valor[indice_reg1] == 0)  // Operação Branch if Zero
         {
-            pc = pc + deslocamento;
+           int pc = pc + deslocamento;
             wprintw(win3, "PC: %d\n", pc);
             wrefresh(win3);
         }
     }
 }
-
 
     }
 

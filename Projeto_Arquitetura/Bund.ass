@@ -1,18 +1,18 @@
-data
+.data
+
+    texto: .asciiz "O resultado do Fatorial de 5 é \n\n"
 
 .text
 
 main:
 
-li $t0, 5
-li $t1, 10
-
-sub $t5, $t0, $t1
-
-sw $t2, 20($t3)
-li $v0, 1
-syscall
+  li $t0,2
+  li $t1, 3
+  
+  sw $t0, 20($t5)
+  lw $t3, 20($t5)
 
 
-li $v0, 10
-syscall
+    
+   li $v0, 10
+   Syscall
